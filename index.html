@@ -57,12 +57,15 @@
   }
   .search{height:34px;background:#171717;display:flex;align-items:center;max-width:380px;flex:1;padding:0 12px;}
   .search span{font-size:16px;color:var(--muted);margin-right:8px;}
-  .search input{background:none;border:0;outline:0;color:var(--text);width:100%;height:100%;font-size:12px;}
+  .search input{background:none;border:0;outline:0;color:var(--text);width:100%;height:100%;font-size:16px;}
   .top-actions{margin-left:auto;display:flex;gap:14px;align-items:center;}
   .top-actions button{background:none;border:0;color:#eee;font-size:12px;}
   .cart-btn{position:relative;font-size:18px !important;}
   .cart-count{position:absolute;background:var(--red);color:#fff;font-size:8px;border-radius:50%;
-    width:15px;height:15px;display:flex;align-items:center;justify-content:center;top:-6px;right:-8px;font-weight:800;}
+    width:15px;height:15px;display:flex;align-items:center;justify-content:center;top:-6px;right:-8px;font-weight:800;
+    transition:transform .2s ease;}
+  .cart-count.bump{animation:bump .3s ease;}
+  @keyframes bump{0%{transform:scale(1);}50%{transform:scale(1.5);}100%{transform:scale(1);}}
 
   .hero{
     height:340px;margin:16px 20px;position:relative;overflow:hidden;border:1px solid #303030;
@@ -78,8 +81,12 @@
 
   .categories{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:0 20px 20px;}
   .categories article{height:130px;border:1px solid var(--line);background:#121212;position:relative;
-    overflow:hidden;padding:12px;display:flex;flex-direction:column;justify-content:flex-end;}
-  .cat-photo{position:absolute;inset:0;opacity:.62;}
+    overflow:hidden;padding:12px;display:flex;flex-direction:column;justify-content:flex-end;
+    transition:transform .25s ease, border-color .25s ease;}
+  .categories article:hover{transform:translateY(-4px);border-color:var(--line2);}
+  .categories article:active{transform:translateY(-1px) scale(.98);}
+  .cat-photo{position:absolute;inset:0;opacity:.62;transition:transform .5s ease, opacity .3s ease;}
+  .categories article:hover .cat-photo{transform:scale(1.08);opacity:.8;}
   .man{background:radial-gradient(at 55% 30%,#666,#252525 25%,#0c0c0c 65%);}
   .woman{background:radial-gradient(at 45% 25%,#777,#292929 25%,#0c0c0c 67%);}
   .street{background:linear-gradient(135deg,#4a4a4a,#151515 45%,#080808);}
@@ -94,23 +101,35 @@
   .section-title h2{font-size:18px;margin:0;font-weight:900;}
   .section-title a{font-size:10px;color:var(--muted);}
   .filters{display:flex;gap:4px;flex-wrap:wrap;}
-  .filters button{background:#121212;color:#888;border:1px solid var(--line2);font-size:8px;font-weight:800;padding:7px 9px;}
+  .filters button{background:#121212;color:#888;border:1px solid var(--line2);font-size:8px;font-weight:800;padding:7px 9px;
+    transition:background .2s ease, color .2s ease, transform .15s ease;}
   .filters button.active{background:#fff;color:#000;}
+  .filters button:active{transform:scale(.93);}
 
   .products{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
-  .product{background:var(--panel);border:1px solid var(--line);min-width:0;}
+  .product{background:var(--panel);border:1px solid var(--line);min-width:0;
+    opacity:0;transform:translateY(14px);animation:cardIn .4s ease forwards;
+    transition:border-color .2s ease, transform .2s ease;}
+  .product:hover{border-color:var(--line2);transform:translateY(-3px);}
+  @keyframes cardIn{to{opacity:1;transform:translateY(0);}}
   .photo{height:190px;position:relative;display:flex;align-items:center;justify-content:center;
     background:radial-gradient(circle at 50% 35%,#4a4a4a,#181818 45%,#0c0c0c 75%);overflow:hidden;}
-  .product-emoji{font-size:56px;filter:grayscale(1);}
+  .product-emoji{font-size:56px;filter:grayscale(1);transition:transform .35s ease;}
+  .product:hover .product-emoji{transform:scale(1.12) rotate(-2deg);}
   .badge{position:absolute;top:9px;left:9px;background:#555;padding:4px 6px;font-size:7px;font-weight:900;}
-  .fav{position:absolute;top:6px;right:8px;background:none;border:0;color:#ddd;font-size:16px;}
+  .fav{position:absolute;top:6px;right:8px;background:none;border:0;color:#ddd;font-size:16px;transition:transform .2s ease, color .2s ease;}
+  .fav:active{transform:scale(1.3);}
+  .fav.active{color:var(--red);animation:favPop .3s ease;}
+  @keyframes favPop{0%{transform:scale(1);}50%{transform:scale(1.4);}100%{transform:scale(1);}}
   .info{padding:11px;}
   .info h3{font-size:11px;margin:0 0 6px;font-weight:600;}
   .info p{font-size:8px;color:#777;margin:0 0 8px;}
   .price{font-size:11px;font-weight:900;}
-  .add{width:100%;margin-top:8px;background:#1a1a1a;color:#fff;border:1px solid var(--line2);padding:8px;font-size:8px;font-weight:900;}
-  .add:active{background:#fff;color:#000;}
-  .add.added{background:#fff;color:#000;}
+  .add{width:100%;margin-top:8px;background:#1a1a1a;color:#fff;border:1px solid var(--line2);padding:8px;font-size:8px;font-weight:900;
+    transition:background .15s ease, color .15s ease, transform .15s ease;}
+  .add:active{background:#fff;color:#000;transform:scale(.96);}
+  .add.added{background:#fff;color:#000;animation:addPop .35s ease;}
+  @keyframes addPop{0%{transform:scale(1);}40%{transform:scale(1.05);}100%{transform:scale(1);}}
 
   .sale-banner{margin:0 20px 40px;border:1px solid var(--line2);background:#e7e7e3;color:#0b0b0b;
     padding:26px;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px;}
@@ -128,7 +147,7 @@
   .shade{position:fixed;inset:0;background:rgba(0,0,0,.73);z-index:30;}
   .hidden{display:none;}
   .drawer{position:fixed;right:0;top:0;bottom:0;width:min(360px,100%);background:#111;border-left:1px solid var(--line2);
-    z-index:40;padding:20px;transform:translateX(100%);transition:.25s;
+    z-index:40;padding:20px;transform:translateX(100%);transition:transform .3s cubic-bezier(.2,.8,.2,1);
     padding-top:calc(20px + env(safe-area-inset-top,0px));}
   .drawer.open{transform:translateX(0);}
   .drawer-head{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line2);padding-bottom:12px;}
@@ -164,7 +183,7 @@
   .modal.hidden{display:none;}
   .modal-box{background:#111;border:1px solid #333;max-width:400px;width:100%;padding:22px;max-height:85vh;overflow-y:auto;}
   .modal-box h2{font-size:18px;margin-bottom:14px;}
-  .modal-box input,.modal-box select{width:100%;background:#191919;color:#fff;border:1px solid #333;padding:11px;margin:6px 0;outline:none;font-family:'Inter',sans-serif;font-size:12px;}
+  .modal-box input,.modal-box select{width:100%;background:#191919;color:#fff;border:1px solid #333;padding:11px;margin:6px 0;outline:none;font-family:'Inter',sans-serif;font-size:16px;}
   .modal-box .add{margin-top:10px;}
   .modal-close{background:none;border:0;color:#fff;font-size:20px;float:right;}
   .order-summary{font-size:11px;color:#999;margin:10px 0;line-height:1.7;border-top:1px solid #292929;border-bottom:1px solid #292929;padding:10px 0;}
@@ -228,8 +247,8 @@
 <section class="categories">
   <article data-cat="all" style="cursor:pointer"><div class="cat-photo man"></div><strong>ERKAKLAR</strong><small>Kolleksiya →</small></article>
   <article data-cat="Hoodie" style="cursor:pointer"><div class="cat-photo woman"></div><strong>YANGI</strong><small>Kolleksiya →</small></article>
-  <article data-cat="Kurtka" style="cursor:pointer"><div class="cat-photo street"></div><strong>STREETWEAR</strong><small>Kolleksiya →</small></article>
-  <article data-cat="Shim" style="cursor:pointer"><div class="cat-photo accessories"></div><strong>AKSESSUARLAR</strong><small>Kolleksiya →</small></article>
+  <article data-cat="Kurtka" style="cursor:pointer"><div class="cat-photo street"></div><strong>KURTKA</strong><small>Kolleksiya →</small></article>
+  <article data-cat="Poyabzal" style="cursor:pointer"><div class="cat-photo accessories"></div><strong>POYABZALLAR</strong><small>Kolleksiya →</small></article>
 </section>
 
 <section id="shop" class="products-section">
@@ -241,6 +260,7 @@
       <button data-cat="Hoodie">HOODIE</button>
       <button data-cat="Shim">SHIM</button>
       <button data-cat="Kurtka">KURTKA</button>
+      <button data-cat="Poyabzal">POYABZAL</button>
     </div>
   </div>
   <div id="grid" class="products"></div>
@@ -290,14 +310,18 @@
 
 <script>
   const products = [
-    {name:"Oversize futbolka", cat:"Futbolka", price:210000, emoji:"👕", badge:"Yangi"},
-    {name:"Qora hoodie", cat:"Hoodie", price:340000, emoji:"🧥", badge:"Yangi"},
-    {name:"Klassik shim", cat:"Shim", price:265000, emoji:"👖", badge:null},
-    {name:"Denim kurtka", cat:"Kurtka", price:420000, emoji:"🧥", badge:"Yangi"},
-    {name:"Bo'yinbog' futbolka", cat:"Futbolka", price:190000, emoji:"👕", badge:null},
-    {name:"Sport hoodie", cat:"Hoodie", price:310000, emoji:"🧥", badge:null},
-    {name:"Kargo shim", cat:"Shim", price:295000, emoji:"👖", badge:"Yangi"},
-    {name:"Bomber kurtka", cat:"Kurtka", price:480000, emoji:"🧥", badge:null},
+    {name:"Oversize futbolka", cat:"Futbolka", price:210000, emoji:"👕", badge:"Yangi", sizes:"S · M · L · XL"},
+    {name:"Qora hoodie", cat:"Hoodie", price:340000, emoji:"🧥", badge:"Yangi", sizes:"S · M · L · XL"},
+    {name:"Klassik shim", cat:"Shim", price:265000, emoji:"👖", badge:null, sizes:"S · M · L · XL"},
+    {name:"Denim kurtka", cat:"Kurtka", price:420000, emoji:"🧥", badge:"Yangi", sizes:"S · M · L · XL"},
+    {name:"Bo'yinbog' futbolka", cat:"Futbolka", price:190000, emoji:"👕", badge:null, sizes:"S · M · L · XL"},
+    {name:"Sport hoodie", cat:"Hoodie", price:310000, emoji:"🧥", badge:null, sizes:"S · M · L · XL"},
+    {name:"Kargo shim", cat:"Shim", price:295000, emoji:"👖", badge:"Yangi", sizes:"S · M · L · XL"},
+    {name:"Bomber kurtka", cat:"Kurtka", price:480000, emoji:"🧥", badge:null, sizes:"S · M · L · XL"},
+    {name:"Klassik krossovka", cat:"Poyabzal", price:380000, emoji:"👟", badge:"Yangi", sizes:"40 · 41 · 42 · 43 · 44"},
+    {name:"Sport krossovka", cat:"Poyabzal", price:410000, emoji:"👟", badge:null, sizes:"40 · 41 · 42 · 43 · 44"},
+    {name:"Charm botinka", cat:"Poyabzal", price:520000, emoji:"👞", badge:"Yangi", sizes:"40 · 41 · 42 · 43 · 44"},
+    {name:"Kundalik krossovka", cat:"Poyabzal", price:355000, emoji:"👟", badge:null, sizes:"40 · 41 · 42 · 43 · 44"},
   ];
 
   const grid = document.getElementById('grid');
@@ -311,6 +335,7 @@
     products.filter(p => filter==='all' || p.cat===filter || (filter==='new' && p.badge==='Yangi')).forEach((p,i) => {
       const el = document.createElement('article');
       el.className = 'product';
+      el.style.animationDelay = (i * 0.05) + 's';
       el.innerHTML = `
         <div class="photo">
           ${p.badge ? `<span class="badge">${p.badge}</span>` : ''}
@@ -319,7 +344,7 @@
         </div>
         <div class="info">
           <h3>${p.name}</h3>
-          <p>${p.cat} · S · M · L · XL</p>
+          <p>${p.cat} · ${p.sizes}</p>
           <span class="price">${p.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')} so'm</span>
           <button class="add" data-name="${p.name}" data-price="${p.price}">SAVATCHAGA QO'SHISH +</button>
         </div>`;
@@ -327,6 +352,12 @@
     });
   }
   renderProducts('all');
+
+  grid.addEventListener('click', e => {
+    if(!e.target.classList.contains('fav')) return;
+    e.target.classList.toggle('active');
+    e.target.textContent = e.target.classList.contains('active') ? '♥' : '♡';
+  });
 
   document.querySelectorAll('.filters button').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -352,6 +383,9 @@
 
   function renderCart(){
     cartCountEl.textContent = cart.length;
+    cartCountEl.classList.remove('bump');
+    void cartCountEl.offsetWidth;
+    cartCountEl.classList.add('bump');
     if(!cart.length){
       cartItemsEl.innerHTML = '<p style="color:#777;font-size:12px">Savatcha bo\'sh.</p>';
     } else {
@@ -403,6 +437,8 @@
   });
   document.getElementById('closeCheckout').addEventListener('click', () => checkoutModal.classList.add('hidden'));
 
+  const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzBCUVbcvY9LldJF59BS_jr2L2uFw-SFoYeJgCkkF9twbFbyV7aVBSVD0SCtWwSTKt8/exec';
+
   orderForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const fd = new FormData(orderForm);
@@ -414,19 +450,33 @@
       items: cart,
       total: cart.reduce((s,i)=>s+i.price,0),
     };
-    if (tg && tg.sendData) {
-      tg.sendData(JSON.stringify(order));
-      tg.close();
-    } else {
-      alert("Buyurtma qabul qilindi! (Test rejimi — Telegram tashqarisida sendData ishlamaydi)");
-      console.log(order);
-    }
 
-    cart = [];
-    renderCart();
-    orderForm.reset();
-    checkoutModal.classList.add('hidden');
-    closeCart();
+    const submitBtn = orderForm.querySelector('button[type="submit"]');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = 'YUBORILMOQDA...';
+    submitBtn.disabled = true;
+
+    fetch(SHEET_ENDPOINT, {
+      method: 'POST',
+      body: JSON.stringify(order),
+    })
+    .catch(err => console.error('Sheet write error:', err))
+    .finally(() => {
+      if (tg && tg.sendData) {
+        tg.sendData(JSON.stringify(order));
+        tg.close();
+      } else {
+        alert("Buyurtma qabul qilindi! Tez orada siz bilan bog'lanamiz.");
+      }
+
+      cart = [];
+      renderCart();
+      orderForm.reset();
+      submitBtn.textContent = originalText;
+      submitBtn.disabled = false;
+      checkoutModal.classList.add('hidden');
+      closeCart();
+    });
   });
 </script>
 </body>
