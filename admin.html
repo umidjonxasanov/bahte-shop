@@ -2,219 +2,412 @@
 <html lang="uz">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>BAHTE SHOP — Admin panel</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Bahte Shop — Admin</title>
 <style>
-:root{
-  --bg:#090909; --panel:#111111; --line:#292929; --line2:#333333;
-  --text:#F4F4F1; --muted:#999999; --red:#EE2222; --green:#3ecf6a;
-}
-*{box-sizing:border-box;}
-body{margin:0;background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;padding:20px;}
-h1{font-size:20px;font-weight:900;margin:0 0 20px;}
-.card{background:var(--panel);border:1px solid var(--line);padding:18px;margin-bottom:16px;}
-input,select{width:100%;background:#191919;color:#fff;border:1px solid var(--line2);padding:11px;margin:6px 0;font-family:'Inter',sans-serif;font-size:14px;outline:none;}
-label{font-size:11px;color:var(--muted);display:block;margin-top:10px;}
-button{font-family:'Inter',sans-serif;cursor:pointer;border:0;padding:12px;font-weight:800;font-size:12px;width:100%;margin-top:12px;}
-.btn-primary{background:#fff;color:#000;}
-.btn-primary:disabled{opacity:.5;cursor:not-allowed;}
-.btn-danger{background:var(--red);color:#fff;width:auto;padding:8px 12px;font-size:10px;margin:0;}
-.btn-secondary{background:#222;color:#fff;border:1px solid var(--line2);width:auto;padding:8px 12px;font-size:10px;margin:0;}
-.hidden{display:none;}
-.product-row{display:flex;gap:12px;align-items:center;border-bottom:1px solid var(--line);padding:12px 0;}
-.product-row img{width:56px;height:56px;object-fit:cover;background:#1a1a1a;flex:none;}
-.product-row .emoji-ph{width:56px;height:56px;display:flex;align-items:center;justify-content:center;font-size:28px;background:#1a1a1a;flex:none;}
-.product-row .info{flex:1;min-width:0;}
-.product-row .info b{display:block;font-size:13px;}
-.product-row .info small{color:var(--muted);font-size:11px;}
-.product-row .actions{display:flex;gap:6px;}
-.msg{font-size:12px;padding:10px;margin-top:8px;}
-.msg.ok{background:#0e2a17;color:var(--green);}
-.msg.err{background:#2a0e0e;color:var(--red);}
-.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
-.small-note{font-size:11px;color:var(--muted);margin-top:6px;}
+  :root{--bg:#090909;--panel:#111;--line:#2a2a2a;--line2:#3a3a3a;--text:#f4f4f1;--muted:#8a8a8a;--red:#ee2222;--ok:#3ddc84;}
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;font-size:15px;
+    padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0);}
+  [hidden]{display:none !important;}
+  .wrap{max-width:640px;margin:0 auto;padding:16px;}
+  h1{font-size:18px;letter-spacing:.12em;margin:0;font-weight:900;}
+  h2{font-size:14px;letter-spacing:.08em;margin:0 0 12px;font-weight:800;text-transform:uppercase;}
+  .card{background:var(--panel);border:1px solid var(--line);padding:16px;margin-bottom:16px;}
+  label{display:block;font-size:12px;color:var(--muted);margin:12px 0 6px;font-weight:600;}
+  input[type=text],input[type=email],input[type=password],input[type=number],select{
+    width:100%;background:#0b0b0b;color:var(--text);border:1px solid var(--line2);padding:12px;font-size:16px;border-radius:0;}
+  input:focus,select:focus{outline:none;border-color:#fff;}
+  button{font-family:inherit;cursor:pointer;border:1px solid var(--line2);background:#1a1a1a;color:var(--text);padding:12px 14px;font-weight:800;font-size:13px;letter-spacing:.04em;}
+  button.primary{background:#fff;color:#000;border-color:#fff;width:100%;margin-top:16px;padding:14px;}
+  button.danger{color:#ff6b6b;border-color:#5a2a2a;}
+  button:disabled{opacity:.5;cursor:default;}
+  .row{display:flex;gap:10px;}
+  .row > *{flex:1;}
+  .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+  .msg{margin-top:12px;font-size:13px;min-height:18px;}
+  .msg.err{color:#ff6b6b;} .msg.ok{color:var(--ok);}
+  .check{display:flex;align-items:center;gap:10px;margin-top:14px;font-size:14px;color:var(--text);}
+  .check input{width:20px;height:20px;}
+  .preview{margin-top:10px;display:flex;align-items:center;gap:12px;}
+  .preview img{width:96px;height:96px;object-fit:cover;border:1px solid var(--line2);background:#000;}
+  .item{display:flex;gap:12px;align-items:center;padding:12px 0;border-top:1px solid var(--line);}
+  .item:first-child{border-top:0;}
+  .thumb{width:64px;height:64px;flex:0 0 64px;background:#000;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:28px;overflow:hidden;}
+  .thumb img{width:100%;height:100%;object-fit:cover;}
+  .meta{flex:1;min-width:0;}
+  .meta b{display:block;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .meta span{display:block;font-size:12px;color:var(--muted);margin-top:3px;}
+  .tag{display:inline-block !important;background:#555;color:#fff !important;font-size:9px !important;padding:2px 6px;font-weight:900;margin-top:5px !important;}
+  .acts{display:flex;flex-direction:column;gap:6px;}
+  .acts button{padding:8px 10px;font-size:11px;}
+  .hint{font-size:12px;color:var(--muted);line-height:1.5;}
 </style>
 </head>
 <body>
 
-<div id="loginBox" class="card">
-  <h1>BAHTE SHOP — Kirish</h1>
-  <label>Email</label>
-  <input id="loginEmail" type="email" placeholder="admin@bahte.uz">
-  <label>Parol</label>
-  <input id="loginPassword" type="password" placeholder="••••••••">
-  <button class="btn-primary" id="loginBtn">KIRISH</button>
-  <div id="loginMsg"></div>
+<!-- KIRISH -->
+<div id="loginView" class="wrap">
+  <div class="top"><h1>BAHTE SHOP · ADMIN</h1></div>
+  <form id="loginForm" class="card" autocomplete="on">
+    <h2>Kirish</h2>
+    <label for="email">Email</label>
+    <input id="email" type="email" autocomplete="username" required>
+    <label for="password">Parol</label>
+    <input id="password" type="password" autocomplete="current-password" required>
+    <button id="loginBtn" class="primary" type="submit">KIRISH</button>
+    <div id="loginMsg" class="msg err"></div>
+  </form>
 </div>
 
-<div id="adminBox" class="hidden">
-  <div class="topbar">
-    <h1>Mahsulotlarni boshqarish</h1>
-    <button class="btn-secondary" id="logoutBtn" style="width:auto;">Chiqish</button>
+<!-- ADMIN PANEL -->
+<div id="appView" class="wrap" hidden>
+  <div class="top">
+    <h1>ADMIN</h1>
+    <button id="logoutBtn" type="button">CHIQISH</button>
+  </div>
+
+  <form id="productForm" class="card">
+    <h2 id="formTitle">Yangi mahsulot</h2>
+
+    <label for="fName">Nomi</label>
+    <input id="fName" type="text" placeholder="Masalan: Qora hoodie" required maxlength="80">
+
+    <label for="fCat">Kategoriya</label>
+    <select id="fCat"></select>
+
+    <label for="fPrice">Narxi (so'm)</label>
+    <input id="fPrice" type="number" inputmode="numeric" min="0" step="1000" placeholder="340000" required>
+
+    <label for="fSizes">O'lchamlar</label>
+    <input id="fSizes" type="text" placeholder="S · M · L · XL" maxlength="60">
+
+    <label class="check"><input id="fBadge" type="checkbox"> "Yangi" belgisi qo'yish</label>
+
+    <label for="fImage">Rasm</label>
+    <input id="fImage" type="file" accept="image/*">
+    <div class="preview" id="previewBox" hidden>
+      <img id="previewImg" alt="">
+      <button id="removeImg" type="button">RASMNI OLIB TASHLASH</button>
+    </div>
+
+    <button id="saveBtn" class="primary" type="submit">SAQLASH</button>
+    <button id="cancelBtn" type="button" style="width:100%;margin-top:10px" hidden>BEKOR QILISH</button>
+    <div id="formMsg" class="msg"></div>
+  </form>
+
+  <div id="seedBox" class="card" hidden>
+    <h2>Baza bo'sh</h2>
+    <p class="hint">Saytdagi hozirgi 12 ta standart mahsulotni bazaga yuklab, keyin ularni tahrirlashingiz mumkin.</p>
+    <button id="seedBtn" class="primary" type="button">STANDART MAHSULOTLARNI YUKLASH</button>
+    <div id="seedMsg" class="msg"></div>
   </div>
 
   <div class="card">
-    <h1 style="font-size:14px;">Yangi mahsulot qo'shish</h1>
-    <label>Nomi</label>
-    <input id="f-name" placeholder="Masalan: Oversize futbolka">
-    <label>Kategoriya</label>
-    <select id="f-cat">
-      <option value="Futbolka">Futbolka</option>
-      <option value="Hoodie">Hoodie</option>
-      <option value="Shim">Shim</option>
-      <option value="Kurtka">Kurtka</option>
-      <option value="Poyabzal">Poyabzal</option>
-    </select>
-    <label>Narxi (so'm, faqat raqam)</label>
-    <input id="f-price" type="number" placeholder="210000">
-    <label>O'lchamlar</label>
-    <input id="f-sizes" placeholder="S · M · L · XL">
-    <label>Belgi (ixtiyoriy)</label>
-    <select id="f-badge">
-      <option value="">Yo'q</option>
-      <option value="Yangi">Yangi</option>
-    </select>
-    <label>Rasm linki (ixtiyoriy — imgbb.com yoki postimages.org'da yuklab, linkini shu yerga qo'ying)</label>
-    <input id="f-imageurl" type="url" placeholder="https://i.ibb.co/xxxxx/rasm.jpg">
-    <label>Yoki emoji (rasm linki bo'lmasa)</label>
-    <input id="f-emoji" placeholder="👕" maxlength="4">
-    <button class="btn-primary" id="addBtn">QO'SHISH</button>
-    <div id="addMsg"></div>
-  </div>
-
-  <div class="card">
-    <h1 style="font-size:14px;">Mavjud mahsulotlar</h1>
-    <div id="productList"><p class="small-note">Yuklanmoqda...</p></div>
+    <h2>Mahsulotlar <span id="count" style="color:var(--muted)"></span></h2>
+    <div id="plist"></div>
   </div>
 </div>
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
-import {
-  getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
-import {
-  getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot
-} from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+  import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyB65nQMKG-N2xginfKpiJxQf9XYhF7xpI8",
-  authDomain: "bahte-shop.firebaseapp.com",
-  projectId: "bahte-shop",
-  storageBucket: "bahte-shop.firebasestorage.app",
-  messagingSenderId: "144220455437",
-  appId: "1:144220455437:web:9ccf23a5c77bd51aca8b44",
-  measurementId: "G-FGEQQ8J497"
-};
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+  const firebaseConfig = {
+    apiKey: "AIzaSyB65nQMKG-N2xginfKpiJxQf9XYhF7xpI8",
+    authDomain: "bahte-shop.firebaseapp.com",
+    projectId: "bahte-shop",
+    storageBucket: "bahte-shop.firebasestorage.app",
+    messagingSenderId: "144220455437",
+    appId: "1:144220455437:web:9ccf23a5c77bd51aca8b44"
+  };
 
-const loginBox = document.getElementById('loginBox');
-const adminBox = document.getElementById('adminBox');
-const loginMsg = document.getElementById('loginMsg');
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const col = collection(db, 'products');
 
-document.getElementById('loginBtn').addEventListener('click', async () => {
-  const email = document.getElementById('loginEmail').value.trim();
-  const password = document.getElementById('loginPassword').value;
-  loginMsg.innerHTML = '';
-  try{
-    await signInWithEmailAndPassword(auth, email, password);
-  }catch(err){
-    loginMsg.innerHTML = `<div class="msg err">Xato: email yoki parol noto'g'ri.</div>`;
+  const CATS = {
+    Futbolka: { emoji: '👕', sizes: 'S · M · L · XL' },
+    Hoodie:   { emoji: '🧥', sizes: 'S · M · L · XL' },
+    Shim:     { emoji: '👖', sizes: 'S · M · L · XL' },
+    Kurtka:   { emoji: '🧥', sizes: 'S · M · L · XL' },
+    Poyabzal: { emoji: '👟', sizes: '40 · 41 · 42 · 43 · 44' },
+  };
+
+  const DEFAULTS = [
+    {name:"Oversize futbolka", cat:"Futbolka", price:210000, badge:"Yangi"},
+    {name:"Qora hoodie", cat:"Hoodie", price:340000, badge:"Yangi"},
+    {name:"Klassik shim", cat:"Shim", price:265000, badge:null},
+    {name:"Denim kurtka", cat:"Kurtka", price:420000, badge:"Yangi"},
+    {name:"Bo'yinbog' futbolka", cat:"Futbolka", price:190000, badge:null},
+    {name:"Sport hoodie", cat:"Hoodie", price:310000, badge:null},
+    {name:"Kargo shim", cat:"Shim", price:295000, badge:"Yangi"},
+    {name:"Bomber kurtka", cat:"Kurtka", price:480000, badge:null},
+    {name:"Klassik krossovka", cat:"Poyabzal", price:380000, badge:"Yangi"},
+    {name:"Sport krossovka", cat:"Poyabzal", price:410000, badge:null},
+    {name:"Charm botinka", cat:"Poyabzal", price:520000, emoji:"👞", badge:"Yangi"},
+    {name:"Kundalik krossovka", cat:"Poyabzal", price:355000, badge:null},
+  ];
+
+  const $ = id => document.getElementById(id);
+  const esc = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const fmt = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+
+  let items = [];
+  let editingId = null;
+  let imageData = null;       // null = o'zgarmagan, '' = olib tashlangan, 'data:...' = yangi
+  let currentImage = '';      // tahrirlanayotgan mahsulotning hozirgi rasmi
+
+  function setMsg(el, text, ok) {
+    el.textContent = text || '';
+    el.className = 'msg ' + (ok ? 'ok' : 'err');
   }
-});
 
-document.getElementById('logoutBtn').addEventListener('click', () => signOut(auth));
-
-onAuthStateChanged(auth, (user) => {
-  if(user){
-    loginBox.classList.add('hidden');
-    adminBox.classList.remove('hidden');
-    listenProducts();
-  } else {
-    loginBox.classList.remove('hidden');
-    adminBox.classList.add('hidden');
+  function errText(e) {
+    const c = (e && e.code) || '';
+    if (c === 'auth/invalid-credential' || c === 'auth/wrong-password' || c === 'auth/user-not-found') return "Email yoki parol noto'g'ri.";
+    if (c === 'auth/invalid-email') return "Email noto'g'ri yozilgan.";
+    if (c === 'auth/too-many-requests') return "Juda ko'p urinish. Birozdan keyin qayta urining.";
+    if (c === 'auth/network-request-failed') return "Internet bilan muammo.";
+    if (c === 'auth/invalid-api-key' || c === 'auth/api-key-not-valid.-please-pass-a-valid-api-key.') return "Firebase kaliti (apiKey) noto'g'ri yozilgan.";
+    if (c === 'permission-denied') return "Ruxsat yo'q: bu hisob admin emas yoki xavfsizlik qoidalari noto'g'ri.";
+    return (e && e.message) ? e.message : String(e);
   }
-});
 
-function fmt(n){ return Number(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' '); }
-
-function listenProducts(){
-  onSnapshot(collection(db, 'products'), (snap) => {
-    const list = document.getElementById('productList');
-    if(snap.empty){
-      list.innerHTML = '<p class="small-note">Hali mahsulot yo\'q.</p>';
-      return;
-    }
-    list.innerHTML = '';
-    snap.forEach(docSnap => {
-      const p = docSnap.data();
-      const row = document.createElement('div');
-      row.className = 'product-row';
-      const photo = p.imageUrl
-        ? `<img src="${p.imageUrl}">`
-        : `<div class="emoji-ph">${p.emoji || '📦'}</div>`;
-      row.innerHTML = `
-        ${photo}
-        <div class="info">
-          <b>${p.name}</b>
-          <small>${p.cat} · ${fmt(p.price)} so'm</small>
-        </div>
-        <div class="actions">
-          <button class="btn-danger" data-id="${docSnap.id}">O'CHIRISH</button>
-        </div>`;
-      row.querySelector('.btn-danger').addEventListener('click', async (e) => {
-        if(!confirm(`"${p.name}" o'chirilsinmi?`)) return;
-        await deleteDoc(doc(db, 'products', e.target.dataset.id));
-      });
-      list.appendChild(row);
-    });
+  // ---------- Kategoriya ro'yxati ----------
+  $('fCat').innerHTML = Object.keys(CATS).map(c => `<option value="${c}">${c}</option>`).join('');
+  $('fCat').addEventListener('change', () => {
+    if (!editingId && !$('fSizes').dataset.touched) $('fSizes').value = CATS[$('fCat').value].sizes;
   });
-}
+  $('fSizes').addEventListener('input', () => { $('fSizes').dataset.touched = '1'; });
+  $('fSizes').value = CATS.Futbolka.sizes;
 
-document.getElementById('addBtn').addEventListener('click', async () => {
-  const name = document.getElementById('f-name').value.trim();
-  const cat = document.getElementById('f-cat').value;
-  const price = Number(document.getElementById('f-price').value);
-  const sizes = document.getElementById('f-sizes').value.trim();
-  const badge = document.getElementById('f-badge').value || null;
-  const emoji = document.getElementById('f-emoji').value.trim() || '📦';
-  const imageUrl = document.getElementById('f-imageurl').value.trim() || null;
-  const addMsg = document.getElementById('addMsg');
-  const addBtn = document.getElementById('addBtn');
+  // ---------- Kirish / chiqish ----------
+  $('loginForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    setMsg($('loginMsg'), '');
+    $('loginBtn').disabled = true;
+    try {
+      await signInWithEmailAndPassword(auth, $('email').value.trim(), $('password').value);
+    } catch (err) {
+      setMsg($('loginMsg'), errText(err));
+    } finally {
+      $('loginBtn').disabled = false;
+    }
+  });
 
-  if(!name || !price){
-    addMsg.innerHTML = `<div class="msg err">Nomi va narxini kiriting.</div>`;
-    return;
-  }
+  $('logoutBtn').addEventListener('click', () => signOut(auth));
 
-  addBtn.disabled = true;
-  addBtn.textContent = 'SAQLANMOQDA...';
-  addMsg.innerHTML = '';
+  onAuthStateChanged(auth, user => {
+    $('loginView').hidden = !!user;
+    $('appView').hidden = !user;
+    if (user) { resetForm(); loadList(); }
+    else { $('password').value = ''; }
+  });
 
-  try{
-    await addDoc(collection(db, 'products'), {
-      name, cat, price, sizes, badge, emoji,
-      imageUrl: imageUrl || null,
-      createdAt: Date.now()
+  // ---------- Rasm ----------
+  function readFile(file) {
+    return new Promise((res, rej) => {
+      const fr = new FileReader();
+      fr.onload = () => res(fr.result);
+      fr.onerror = () => rej(new Error("Faylni o'qib bo'lmadi"));
+      fr.readAsDataURL(file);
     });
-
-    addMsg.innerHTML = `<div class="msg ok">Mahsulot qo'shildi!</div>`;
-    document.getElementById('f-name').value = '';
-    document.getElementById('f-price').value = '';
-    document.getElementById('f-sizes').value = '';
-    document.getElementById('f-emoji').value = '';
-    document.getElementById('f-imageurl').value = '';
-  }catch(err){
-    console.error(err);
-    addMsg.innerHTML = `<div class="msg err">Xato yuz berdi: ${err.message}</div>`;
-  }finally{
-    addBtn.disabled = false;
-    addBtn.textContent = "QO'SHISH";
   }
-});
+  function loadImg(url) {
+    return new Promise((res, rej) => {
+      const i = new Image();
+      i.onload = () => res(i);
+      i.onerror = () => rej(new Error("Rasm formati qo'llab-quvvatlanmaydi (JPG yoki PNG tanlang)"));
+      i.src = url;
+    });
+  }
+  async function compress(file) {
+    const img = await loadImg(await readFile(file));
+    let max = 800, q = 0.78, out = '';
+    for (let k = 0; k < 6; k++) {
+      const s = Math.min(1, max / Math.max(img.width, img.height));
+      const c = document.createElement('canvas');
+      c.width = Math.max(1, Math.round(img.width * s));
+      c.height = Math.max(1, Math.round(img.height * s));
+      const ctx = c.getContext('2d');
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(0, 0, c.width, c.height);
+      ctx.drawImage(img, 0, 0, c.width, c.height);
+      out = c.toDataURL('image/jpeg', q);
+      if (out.length < 600000) break;
+      max = Math.round(max * 0.8);
+      q = Math.max(0.5, q - 0.08);
+    }
+    return out;
+  }
+  function showPreview(src) {
+    $('previewBox').hidden = !src;
+    $('previewImg').src = src || '';
+  }
+
+  $('fImage').addEventListener('change', async () => {
+    const f = $('fImage').files[0];
+    if (!f) return;
+    setMsg($('formMsg'), 'Rasm tayyorlanmoqda...', true);
+    try {
+      imageData = await compress(f);
+      showPreview(imageData);
+      setMsg($('formMsg'), '');
+    } catch (err) {
+      $('fImage').value = '';
+      setMsg($('formMsg'), errText(err));
+    }
+  });
+
+  $('removeImg').addEventListener('click', () => {
+    imageData = '';
+    $('fImage').value = '';
+    showPreview('');
+  });
+
+  // ---------- Forma ----------
+  function resetForm() {
+    editingId = null; imageData = null; currentImage = '';
+    $('productForm').reset();
+    delete $('fSizes').dataset.touched;
+    $('fSizes').value = CATS[$('fCat').value].sizes;
+    showPreview('');
+    $('formTitle').textContent = 'Yangi mahsulot';
+    $('saveBtn').textContent = 'SAQLASH';
+    $('cancelBtn').hidden = true;
+  }
+  $('cancelBtn').addEventListener('click', () => { resetForm(); setMsg($('formMsg'), ''); });
+
+  function startEdit(id) {
+    const p = items.find(x => x.id === id);
+    if (!p) return;
+    editingId = id; imageData = null; currentImage = p.image || '';
+    $('fName').value = p.name || '';
+    $('fCat').value = CATS[p.cat] ? p.cat : 'Futbolka';
+    $('fPrice').value = p.price;
+    $('fSizes').value = p.sizes || '';
+    $('fSizes').dataset.touched = '1';
+    $('fBadge').checked = !!p.badge;
+    $('fImage').value = '';
+    showPreview(currentImage);
+    $('formTitle').textContent = 'Tahrirlash';
+    $('saveBtn').textContent = "O'ZGARISHLARNI SAQLASH";
+    $('cancelBtn').hidden = false;
+    setMsg($('formMsg'), '');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  $('productForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const name = $('fName').value.trim();
+    const cat = $('fCat').value;
+    const price = Number($('fPrice').value);
+    if (!name || !(price >= 0)) { setMsg($('formMsg'), "Nomi va narxini to'g'ri kiriting."); return; }
+
+    const data = {
+      name, cat, price,
+      sizes: $('fSizes').value.trim() || CATS[cat].sizes,
+      badge: $('fBadge').checked ? 'Yangi' : null,
+      emoji: CATS[cat].emoji,
+    };
+
+    $('saveBtn').disabled = true;
+    setMsg($('formMsg'), 'Saqlanmoqda...', true);
+    try {
+      if (editingId) {
+        if (imageData !== null) data.image = imageData;
+        await updateDoc(doc(db, 'products', editingId), data);
+      } else {
+        data.image = imageData || '';
+        data.createdAt = Date.now();
+        await addDoc(col, data);
+      }
+      resetForm();
+      setMsg($('formMsg'), 'Saqlandi ✓', true);
+      await loadList();
+    } catch (err) {
+      setMsg($('formMsg'), errText(err));
+    } finally {
+      $('saveBtn').disabled = false;
+    }
+  });
+
+  // ---------- Ro'yxat ----------
+  async function loadList() {
+    try {
+      const snap = await getDocs(col);
+      items = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      items.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+      renderList();
+    } catch (err) {
+      $('plist').innerHTML = `<p class="msg err">${esc(errText(err))}</p>`;
+    }
+  }
+
+  function renderList() {
+    $('count').textContent = items.length ? `(${items.length})` : '';
+    $('seedBox').hidden = items.length > 0;
+    if (!items.length) { $('plist').innerHTML = '<p class="hint">Hali mahsulot yo\'q.</p>'; return; }
+    $('plist').innerHTML = items.map(p => `
+      <div class="item">
+        <div class="thumb">${p.image ? `<img src="${p.image}" alt="">` : esc(p.emoji || '🛍️')}</div>
+        <div class="meta">
+          <b>${esc(p.name)}</b>
+          <span>${esc(p.cat)} · ${fmt(p.price)} so'm</span>
+          ${p.badge ? `<span class="tag">${esc(p.badge)}</span>` : ''}
+        </div>
+        <div class="acts">
+          <button type="button" data-edit="${esc(p.id)}">TAHRIRLASH</button>
+          <button type="button" class="danger" data-del="${esc(p.id)}">O'CHIRISH</button>
+        </div>
+      </div>`).join('');
+  }
+
+  $('plist').addEventListener('click', async e => {
+    const ed = e.target.closest('[data-edit]');
+    const de = e.target.closest('[data-del]');
+    if (ed) { startEdit(ed.dataset.edit); return; }
+    if (de) {
+      const p = items.find(x => x.id === de.dataset.del);
+      if (!p || !confirm(`"${p.name}" o'chirilsinmi?`)) return;
+      de.disabled = true;
+      try {
+        await deleteDoc(doc(db, 'products', p.id));
+        if (editingId === p.id) resetForm();
+        await loadList();
+      } catch (err) {
+        alert(errText(err));
+        de.disabled = false;
+      }
+    }
+  });
+
+  // ---------- Standart mahsulotlarni yuklash ----------
+  $('seedBtn').addEventListener('click', async () => {
+    $('seedBtn').disabled = true;
+    setMsg($('seedMsg'), 'Yuklanmoqda...', true);
+    try {
+      const now = Date.now();
+      for (let i = 0; i < DEFAULTS.length; i++) {
+        const d = DEFAULTS[i];
+        await addDoc(col, {
+          name: d.name, cat: d.cat, price: d.price, badge: d.badge || null,
+          emoji: d.emoji || CATS[d.cat].emoji, sizes: CATS[d.cat].sizes,
+          image: '', createdAt: now - i * 1000,
+        });
+      }
+      setMsg($('seedMsg'), 'Tayyor ✓', true);
+      await loadList();
+    } catch (err) {
+      setMsg($('seedMsg'), errText(err));
+    } finally {
+      $('seedBtn').disabled = false;
+    }
+  });
 </script>
 </body>
 </html>

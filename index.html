@@ -116,8 +116,9 @@
     background:radial-gradient(circle at 50% 35%,#4a4a4a,#181818 45%,#0c0c0c 75%);overflow:hidden;}
   .product-emoji{font-size:56px;filter:grayscale(1);transition:transform .35s ease;}
   .product:hover .product-emoji{transform:scale(1.12) rotate(-2deg);}
-  .badge{position:absolute;top:9px;left:9px;background:#555;padding:4px 6px;font-size:7px;font-weight:900;}
-  .fav{position:absolute;top:6px;right:8px;background:none;border:0;color:#ddd;font-size:16px;transition:transform .2s ease, color .2s ease;}
+  .photo img.pimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .badge{z-index:2;position:absolute;top:9px;left:9px;background:#555;padding:4px 6px;font-size:7px;font-weight:900;}
+  .fav{z-index:2;position:absolute;top:6px;right:8px;background:none;border:0;color:#ddd;font-size:16px;transition:transform .2s ease, color .2s ease;}
   .fav:active{transform:scale(1.3);}
   .fav.active{color:var(--red);animation:favPop .3s ease;}
   @keyframes favPop{0%{transform:scale(1);}50%{transform:scale(1.4);}100%{transform:scale(1);}}
@@ -309,7 +310,7 @@
 </div>
 
 <script>
-  const products = [
+  let products = [
     {name:"Oversize futbolka", cat:"Futbolka", price:210000, emoji:"👕", badge:"Yangi", sizes:"S · M · L · XL"},
     {name:"Qora hoodie", cat:"Hoodie", price:340000, emoji:"🧥", badge:"Yangi", sizes:"S · M · L · XL"},
     {name:"Klassik shim", cat:"Shim", price:265000, emoji:"👖", badge:null, sizes:"S · M · L · XL"},
@@ -340,18 +341,27 @@
         <div class="photo">
           ${p.badge ? `<span class="badge">${p.badge}</span>` : ''}
           <button class="fav">♡</button>
-          <span class="product-emoji">${p.emoji}</span>
+          ${p.image ? `<img class="pimg" src="${p.image}" alt="${esc(p.name)}" loading="lazy">` : `<span class="product-emoji">${p.emoji || '🛍️'}</span>`}
         </div>
         <div class="info">
-          <h3>${p.name}</h3>
-          <p>${p.cat} · ${p.sizes}</p>
+          <h3>${esc(p.name)}</h3>
+          <p>${esc(p.cat)} · ${esc(p.sizes)}</p>
           <span class="price">${p.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')} so'm</span>
-          <button class="add" data-name="${p.name}" data-price="${p.price}">SAVATCHAGA QO'SHISH +</button>
+          <button class="add" data-name="${esc(p.name)}" data-price="${p.price}">SAVATCHAGA QO'SHISH +</button>
         </div>`;
       grid.appendChild(el);
     });
   }
   renderProducts('all');
+
+  function esc(v){
+    return String(v == null ? '' : v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+  window.setProducts = function(list){
+    products = list;
+    const a = document.querySelector('.filters button.active');
+    renderProducts(a ? a.dataset.cat : 'all');
+  };
 
   grid.addEventListener('click', e => {
     if(!e.target.classList.contains('fav')) return;
@@ -478,6 +488,45 @@
       closeCart();
     });
   });
+</script>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyB65nQMKG-N2xginfKpiJxQf9XYhF7xpI8",
+    authDomain: "bahte-shop.firebaseapp.com",
+    projectId: "bahte-shop",
+    storageBucket: "bahte-shop.firebasestorage.app",
+    messagingSenderId: "144220455437",
+    appId: "1:144220455437:web:9ccf23a5c77bd51aca8b44"
+  };
+
+  const CACHE_KEY = 'bahte_products_v1';
+
+  (async () => {
+    try {
+      const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
+      if (Array.isArray(cached) && cached.length) window.setProducts(cached);
+    } catch (e) {}
+
+    try {
+      const db = getFirestore(initializeApp(firebaseConfig));
+      const snap = await getDocs(collection(db, 'products'));
+      const list = snap.docs
+        .map(d => ({ id: d.id, ...d.data() }))
+        .filter(p => p.name && !isNaN(Number(p.price)))
+        .map(p => ({ ...p, price: Number(p.price), badge: p.badge || null, sizes: p.sizes || '', emoji: p.emoji || '🛍️' }));
+      list.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+      if (list.length) {
+        window.setProducts(list);
+        try { localStorage.setItem(CACHE_KEY, JSON.stringify(list)); } catch (e) {}
+      }
+    } catch (e) {
+      console.warn('Mahsulotlarni yuklab bo\'lmadi:', e);
+    }
+  })();
 </script>
 </body>
 </html>
